@@ -144,7 +144,25 @@ export default function App() {
 
   const handleExportExcel = () => {
     if (data.length === 0) return;
-    const ws = XLSX.utils.json_to_sheet(data);
+    
+    // Add footer row to data
+    const dataWithFooter = [...data, {}];
+    
+    const ws = XLSX.utils.json_to_sheet(dataWithFooter, { skipHeader: true });
+    
+    // Add header row
+    XLSX.utils.sheet_add_aoa(ws, [[...Object.keys(data[0])]], { origin: 'A1' });
+    
+    // Add footer text to the first cell of the last row
+    const lastRow = data.length + 1; // +1 for header row
+    XLSX.utils.sheet_add_aoa(ws, [["Built With ❤️ By Abu Sayed [absyd.xyz] and RPICC[beta-rpicc.vercel.app]"]], {
+      origin: `A${lastRow + 1}`
+    });
+    
+    // Merge footer cells for better appearance
+    if (!ws['!merges']) ws['!merges'] = [];
+    ws['!merges'].push({ s: { r: lastRow, c: 0 }, e: { r: lastRow, c: Object.keys(data[0]).length - 1 } });
+    
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Results");
     XLSX.writeFile(wb, "StudentResults.xlsx");
