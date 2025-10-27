@@ -1,16 +1,73 @@
-# React + Vite
+# 🎓 GPA Result Extractor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application for processing and analyzing student GPA results with an intuitive interface and powerful data export capabilities. Built with React, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 📊 Process and parse student result data with GPA information
+- 📥 Simple text input for quick data entry
+- 📤 Export results to Excel with formatted filename and timestamp
+- 📱 Responsive design that works on all devices
+- 🎨 Modern UI with dark mode support
+- ⚡ Fast and efficient processing using modern web technologies
 
-## React Compiler
+## 🚀 Getting Started
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Prerequisites
 
-## Expanding the ESLint configuration
+- Node.js (v16 or higher)
+- npm or yarn
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/result-extractor.git
+   cd result-extractor
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+4. Open [http://localhost:5173](http://localhost:5173) to view it in your browser.
+
+## 🛠️ Built With
+
+- [React](https://reactjs.org/) - JavaScript library for building user interfaces
+- [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+- [SheetJS](https://sheetjs.com/) - Library for parsing and writing Excel files
+- [React Icons](https://react-icons.github.io/react-icons/) - Popular icons for React applications
+
+## 📝 Usage
+
+1. Paste your student result data into the input area
+2. Click "Process Data" to analyze the results
+3. Review the processed data in the table
+4. Click "Export to Excel" to download the results
+5. The exported file will be named with the current date (e.g., `rpicc-results-20251028.xlsx`)
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to open an issue or submit a pull request.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ by [Abu Sayed](https://absyd.xyz/)
+- In collaboration with [RPICC](https://beta-rpicc.vercel.app/)
+- Thanks to all contributors who helped improve this project
