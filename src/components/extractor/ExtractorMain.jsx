@@ -205,8 +205,8 @@ export default function GPAResultParser() {
   
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen  ">
+      <div className="container mx-auto">
         {/* Header */}
         <header className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-2">

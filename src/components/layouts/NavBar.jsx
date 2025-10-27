@@ -1,6 +1,6 @@
 import React from 'react';
 import { FiExternalLink } from 'react-icons/fi';
-
+import ABSYD_LOGO from "../../assets/absyd_logo.png";
 
 
 const NavBar = () => {
@@ -13,6 +13,11 @@ const NavBar = () => {
               <img 
                 className="h-8 w-auto" 
                 src="https://beta-rpicc.vercel.app/assets/rpicc-logo-DzLRc93w.png" 
+                alt="RPICC Logo" 
+              />
+              <img 
+                className="h-8 w-auto" 
+                src={ABSYD_LOGO} 
                 alt="RPICC Logo" 
               />
               <span className="ml-3 text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
