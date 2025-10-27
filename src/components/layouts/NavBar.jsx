@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiExternalLink } from 'react-icons/fi';
 import ABSYD_LOGO from "../../assets/absyd_logo.png";
-
+import { Link } from 'react-router';
 
 const NavBar = () => {
   return (
@@ -9,6 +9,7 @@ const NavBar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
+            <Link to="/">
             <div className="flex-shrink-0 flex items-center">
               <img 
                 className="h-8 w-auto" 
@@ -24,6 +25,7 @@ const NavBar = () => {
                 RPICC Result Extractor
               </span>
             </div>
+            </Link>
           </div>
           <div className="hidden md:block">
             <div className="ml-4 flex items-center space-x-4">

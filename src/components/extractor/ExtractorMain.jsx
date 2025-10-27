@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
 import { FiUpload, FiDownload, FiLoader, FiInfo, FiTrash2 } from "react-icons/fi";
+import SubName from "./SubName";
 
 export default function GPAResultParser() {
   const [input, setInput] = useState("");
@@ -357,7 +358,7 @@ export default function GPAResultParser() {
                         <div className="grid grid-cols-12 gap-0">
                           {Object.entries(row).map(([key, value]) => (
                             <div 
-                              key={key}
+                            key={key}
                               className={`p-3 text-sm ${
                                 key === 'Status' 
                                   ? 'col-span-2 font-medium' 
@@ -375,6 +376,7 @@ export default function GPAResultParser() {
                               {value}
                             </div>
                           ))}
+                          <SubName subject={row["Failed Subs"]} />
                         </div>
                       </div>
                     ))}
