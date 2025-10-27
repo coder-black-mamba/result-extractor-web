@@ -1,6 +1,8 @@
 import React from 'react';
 import { FiExternalLink } from 'react-icons/fi';
 
+
+
 const NavBar = () => {
   return (
     <nav className="bg-gray-900/80 backdrop-blur-sm border-b border-gray-800">
