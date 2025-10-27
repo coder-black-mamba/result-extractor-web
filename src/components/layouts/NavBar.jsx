@@ -14,7 +14,7 @@ const NavBar = () => {
                 alt="RPICC Logo" 
               />
               <span className="ml-3 text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                Result Extractor
+                RPICC Result Extractor
               </span>
             </div>
           </div>
