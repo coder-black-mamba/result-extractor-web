@@ -16,23 +16,38 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 to-gray-950">
       {/* Navigation */}
-      <NavBar className={isScrolled ? 'shadow-lg' : ''} />
+      <div className={`fixed w-full z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-gray-900/90 backdrop-blur-sm shadow-lg' : 'bg-transparent'
+      }`}>
+        <NavBar />
+      </div>
       
       {/* Main Content */}
-      <main className="flex-grow">
-        <div className="relative overflow-hidden">
-          {/* Animated background elements */}
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-emerald-900/20 to-transparent"></div>
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9Ii8wODE4MTgiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIwOS0xLjc5MS00LTQtNHMtNCAxLjc5MS00IDQgMS43OTEgNCA0IDQgNC0xLjc5MSA0LTR6bTAgMGMwIDIuMjA5LTEuNzkxIDQtNCA0cy00LTEuNzkxLTQtNCAxLjc5MS00IDQtNCA0IDEuNzkxIDQgNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-20"></div>
+      <main className="flex-grow pt-20">
+        <div className="relative">
+          {/* Subtle background elements */}
+          <div className="fixed inset-0 -z-10">
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/5 via-transparent to-cyan-900/5"></div>
+            
+            {/* Grid pattern */}
+            <div className="absolute inset-0 bg-grid-white/5 [mask-image:linear-gradient(0deg,transparent,white,transparent)]"></div>
+            
+            {/* Glow effects */}
+            <div className="absolute -top-40 -left-40 w-96 h-96 bg-emerald-500/10 rounded-full mix-blend-multiply filter blur-3xl"></div>
+            <div className="absolute top-1/2 -right-20 w-96 h-96 bg-cyan-500/10 rounded-full mix-blend-multiply filter blur-3xl"></div>
           </div>
-
           
-          {/* Main Content */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-            <ExtractorMain />
+          {/* Main content container */}
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+            
+            {/* Extractor component */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700/50 shadow-xl overflow-hidden">
+              <ExtractorMain />
+            </div>
           </div>
         </div>
       </main>

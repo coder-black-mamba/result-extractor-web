@@ -187,6 +187,23 @@ export default function GPAResultParser() {
     XLSX.writeFile(wb, filename);
   };
 
+  
+  const handleExportJson = () => {
+    if (data.length === 0) return;
+
+    const now = new Date();
+    const filename = `rpicc-results-${now.toISOString().slice(0, 10).replace(/-/g, "")}.json`;
+    const jsonData = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+  
+
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -265,9 +282,21 @@ export default function GPAResultParser() {
                     <FiUpload />
                     Process Data
                   </>
+                  
                 )}
               </button>
-
+                <button
+                    onClick={handleExportJson}
+                    disabled={!data.length || isProcessing}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                      !data.length || isProcessing
+                        ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30'
+                    }`}
+                  >
+                    <FiDownload />
+                    Export JSON
+                  </button> 
               <button
                 onClick={() => setInput("")}
                 disabled={!input}
