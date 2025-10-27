@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
+import { FiUpload, FiDownload, FiLoader, FiInfo, FiTrash2 } from "react-icons/fi";
 
-export default function App() {
+export default function GPAResultParser() {
   const [input, setInput] = useState("");
   const [data, setData] = useState([]);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
 
   const studentRegex = /\d{6}\s*(\(([\s\S]*?)\)|\{([\s\S]*?)\})/gm;
 
@@ -75,9 +78,17 @@ export default function App() {
   //   setData(results);
   // };
 
-  const handleProcess = () => {
-  const matches = [...input.matchAll(studentRegex)];
-  const results = matches.map((m) => {
+  const handleProcess = async () => {
+  if (!input.trim()) return;
+  
+  setIsProcessing(true);
+  
+  // Simulate processing time for better UX
+  await new Promise(resolve => setTimeout(resolve, 300));
+  
+  try {
+    const matches = [...input.matchAll(studentRegex)];
+    const results = matches.map((m) => {
     const roll = m[0].match(/^\d{6}/)[0];
     const content = m[2] || m[3];
 
@@ -137,9 +148,15 @@ export default function App() {
       Status: status,
       "Failed Subs": failedSubs,
     };
-  });
+    });
 
-  setData(results);
+    setData(results);
+  } catch (error) {
+    console.error("Error processing data:", error);
+    alert("An error occurred while processing the data. Please check your input format.");
+  } finally {
+    setIsProcessing(false);
+  }
 };
 
   const handleExportExcel = () => {
@@ -165,85 +182,185 @@ export default function App() {
     
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Results");
-    XLSX.writeFile(wb, "StudentResults.xlsx");
+    const now = new Date();
+    const filename = `rpicc-results-${now.toISOString().slice(0, 10).replace(/-/g, "")}.xlsx`;
+    XLSX.writeFile(wb, filename);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-gray-950 text-white p-6">
-      <h1 className="text-2xl font-bold mb-4 text-emerald-400">
-        🎓 GPA Result Parser
-      </h1>
+    <div className="min-h-screen bg-gray-900 text-gray-100 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <header className="text-center mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-2">
+            🎓 GPA Result Parser
+          </h1>
+          <p className="text-gray-400">Process and analyze student GPA data with ease</p>
+        </header>
 
-      <textarea
-        rows="10"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Paste multiple student records here..."
-        className="w-full max-w-3xl p-3 rounded-lg text-white"
-      />
+        {/* Main Card */}
+        <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl shadow-2xl overflow-hidden border border-gray-700/50 mb-8">
+          {/* Input Section */}
+          <div className="p-6 border-b border-gray-700">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-emerald-300">Input Data</h2>
+              <button
+                onClick={() => setShowHelp(!showHelp)}
+                className="text-gray-400 hover:text-emerald-400 transition-colors"
+                aria-label="Show help"
+              >
+                <FiInfo size={20} />
+              </button>
+            </div>
+            
+            {showHelp && (
+              <div className="bg-gray-900/50 p-4 rounded-lg mb-4 text-sm text-gray-300 border border-emerald-400/20">
+                <h3 className="font-semibold text-emerald-300 mb-2">How to use:</h3>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Paste your student data in the text area below</li>
+                  <li>Format: <code className="bg-gray-700 px-1.5 py-0.5 rounded">
+                    123456{`{gpa1: 3.5, gpa2: 3.2, ...}`}
+                  </code></li>
+                  <li>Click &quot;Process&quot; to analyze the data</li>
+                  <li>Export results to Excel when ready</li>
+                </ul>
+              </div>
+            )}
 
-      <div className="flex gap-4 mt-4">
-        <button
-          onClick={handleProcess}
-          className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-6 py-2 rounded-lg"
-        >
-          Process
-        </button>
+            <div className="relative">
+              <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                placeholder="Paste your student data here..."
+                className="w-full min-h-[200px] p-4 rounded-lg bg-gray-900/50 border-2 border-gray-700 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 text-gray-100 placeholder-gray-500 transition-all duration-200 resize-none"
+                disabled={isProcessing}
+              />
+              {!input && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="text-center p-4 bg-gradient-to-r from-transparent via-gray-900/50 to-transparent w-full">
+                    <FiUpload className="mx-auto mb-2 text-gray-600" size={24} />
+                    <p className="text-gray-500 text-sm">Paste your data or click to type</p>
+                  </div>
+                </div>
+              )}
+            </div>
 
-        <button
-          onClick={handleExportExcel}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-2 rounded-lg"
-        >
-          Export to Excel
-        </button>
-      </div>
+            <div className="flex flex-wrap gap-3 mt-4">
+              <button
+                onClick={handleProcess}
+                disabled={!input.trim() || isProcessing}
+                className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                  !input.trim() || isProcessing
+                    ? 'bg-gray-700 text-gray-500 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30'
+                }`}
+              >
+                {isProcessing ? (
+                  <>
+                    <FiLoader className="animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  <>
+                    <FiUpload />
+                    Process Data
+                  </>
+                )}
+              </button>
 
-      {data.length > 0 && (
-        <div className="mt-6 w-full max-w-4xl overflow-auto">
-          <table className="w-full text-left border-collapse border border-gray-700">
-            <thead>
-              <tr className="bg-gray-700">
-                <th className="border border-gray-600 px-3 py-2">Roll</th>
-                <th className="border border-gray-600 px-3 py-2">GPA1</th>
-                <th className="border border-gray-600 px-3 py-2">GPA2</th>
-                <th className="border border-gray-600 px-3 py-2">GPA3</th>
-                <th className="border border-gray-600 px-3 py-2">GPA4</th>
-                <th className="border border-gray-600 px-3 py-2">GPA5</th>
-                <th className="border border-gray-600 px-3 py-2">GPA6</th>
-                <th className="border border-gray-600 px-3 py-2">GPA7</th>
-                <th className="border border-gray-600 px-3 py-2">GPA8</th>
-                <th className="border border-gray-600 px-3 py-2">Status</th>
-                <th className="border border-gray-600 px-3 py-2">Failed Subs</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row, i) => (
-                <tr key={i} className="even:bg-gray-800 odd:bg-gray-900">
-                  <td className="border border-gray-700 px-3 py-2">{row.Roll}</td>
-                  <td className="border border-gray-700 px-3 py-2">{row.GPA1}</td>
-                  <td className="border border-gray-700 px-3 py-2">{row.GPA2}</td>
-                  <td className="border border-gray-700 px-3 py-2">{row.GPA3}</td>
-                  <td className="border border-gray-700 px-3 py-2">{row.GPA4}</td>
-                  <td className="border border-gray-700 px-3 py-2">{row.GPA5}</td>
-                  <td className="border border-gray-700 px-3 py-2">{row.GPA6}</td>
-                  <td className="border border-gray-700 px-3 py-2">{row.GPA7}</td>
-                  <td className="border border-gray-700 px-3 py-2">{row.GPA8}</td>
-                  <td
-                    className={`border border-gray-700 px-3 py-2 ${
-                      row.Status === "Drop" ? "text-red-500 font-bold" : ""
-                    }`}
-                  >
-                    {row.Status}
-                  </td>
-                  <td className="border border-gray-700 px-3 py-2">
-                    {row["Failed Subs"]}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+              <button
+                onClick={() => setInput("")}
+                disabled={!input}
+                className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                <FiTrash2 size={16} />
+                Clear
+              </button>
+
+              {data.length > 0 && (
+                <button
+                  onClick={handleExportExcel}
+                  className="ml-auto flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-lg font-medium transition-all shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30"
+                >
+                  <FiDownload />
+                  Export to Excel
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Results Section */}
+          {data.length > 0 && (
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold text-emerald-300">Results</h2>
+                <span className="text-sm text-gray-400">
+                  {data.length} {data.length === 1 ? 'record' : 'records'} found
+                </span>
+              </div>
+
+              <div className="overflow-x-auto rounded-lg border border-gray-700">
+                <div className="min-w-full">
+                  <div className="bg-gray-900/50">
+                    <div className="grid grid-cols-12 gap-0">
+                      {Object.keys(data[0]).map((key) => (
+                        <div 
+                          key={key}
+                          className={`px-4 py-3 text-left text-xs font-medium text-emerald-300 uppercase tracking-wider ${
+                            key === 'Status' ? 'col-span-2' : 'col-span-1'
+                          }`}
+                        >
+                          {key}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="divide-y divide-gray-800">
+                    {data.map((row, i) => (
+                      <div 
+                        key={i} 
+                        className={`${
+                          row.Status === "Drop" 
+                            ? 'bg-red-900/10 hover:bg-red-900/20' 
+                            : 'hover:bg-gray-800/50'
+                        } transition-colors`}
+                      >
+                        <div className="grid grid-cols-12 gap-0">
+                          {Object.entries(row).map(([key, value]) => (
+                            <div 
+                              key={key}
+                              className={`p-3 text-sm ${
+                                key === 'Status' 
+                                  ? 'col-span-2 font-medium' 
+                                  : 'col-span-1'
+                              } ${
+                                key === 'Status' 
+                                  ? row.Status === 'Drop' 
+                                    ? 'text-red-400' 
+                                    : row.Status === 'Failed'
+                                    ? 'text-yellow-400'
+                                    : 'text-emerald-400'
+                                  : 'text-gray-300'
+                              }`}
+                            >
+                              {value}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-      )}
+
+        {/* Footer */}
+        <footer className="text-center text-sm text-gray-500 mt-12">
+          <p>GPA Result Parser • {new Date().getFullYear()} • Built with ❤️ by <a href="https://absyd.xyz" target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline">Abu Sayed</a> and <a href="https://beta-rpicc.vercel.app" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">RPICC</a></p>
+        </footer>
+      </div>
     </div>
   );
 }
