@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { SUBJECT_AND_CODES } from '../../assets/SUB_CODES';
 import Footer from '../layouts/Footer';
 import NavBar from '../layouts/NavBar';
+import CGPAReactor from './CGPAReactor';
+import StudentName from './StudentName';
 
 const CheckResult = () => {
   const [result, setResult] = useState(null);
@@ -17,7 +19,7 @@ const CheckResult = () => {
     setError(null);
     
     try {
-      const response = await fetch('/result-5-26-10-25.json');
+      const response = await fetch('/results/5th-rpi-26-10-25.json');
       if (!response.ok) {
         throw new Error('Failed to fetch results');
       }
@@ -62,26 +64,59 @@ const renderResult = () => {
 
   return (
     <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl border border-gray-700/50 shadow-2xl overflow-hidden mt-10">
+      {/* <CGPAReactor cgpa={result.GPA5} /> */}
       {/* Header Section */}
-      <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 py-4 border-b border-gray-700/50">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h2 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-              Academic Transcript
-            </h2>
-            <p className="text-gray-400 text-sm mt-1">
-              Roll: <span className="font-mono text-emerald-300">{result.Roll}</span>
-            </p>
+      <div className="bg-gradient-to-br from-gray-900 to-gray-800 px-6 py-5 border-b border-gray-700/50 shadow-sm">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col justify-center items-center text-center sm:items-center gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center space-x-3">
+                {/* <div className="h-10 w-1 bg-gradient-to-b from-emerald-400 to-cyan-400 rounded-full"></div> */}
+                <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                  Academic Transcript
+                </h2>
+              </div>
+              <p className="text-gray-300/90 text-sm pl-4">
+                Roll: <span className="font-mono font-medium text-emerald-300">{result.Roll}</span>
+              </p>
+              <StudentName roll={result.Roll} />
+            </div>
+            
+            <div className={`flex  gap-2 items-center px-4 py-2 rounded-full font-medium backdrop-blur-sm transition-all duration-200 ${
+              result.Status === 'Passed' 
+                ? 'bg-green-500/10 text-green-300 border border-green-500/20 hover:bg-green-500/15' :
+              result.Status === 'Failed' 
+                ? 'bg-red-500/10 text-red-300 border border-red-500/20 hover:bg-red-500/15' :
+                'bg-yellow-500/10 text-yellow-300 border border-yellow-500/20 hover:bg-yellow-500/15'
+            }`}>
+              <span className="relative flex h-2 w-2 mr-2">
+                <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                  result.Status === 'Passed' ? 'bg-green-400' :
+                  result.Status === 'Failed' ? 'bg-red-400' : 'bg-yellow-400'
+                }`}></span>
+                <span className={`relative inline-flex rounded-full h-2 w-2 ${
+                  result.Status === 'Passed' ? 'bg-green-400' :
+                  result.Status === 'Failed' ? 'bg-red-400' : 'bg-yellow-400'
+                }`}></span>
+              </span>
+              {result.Status}
+              {result.Status === 'Passed' && (
+                <span className="ml-3 px-2 text-3xl py-0.5 text-xs bg-green-500/10 text-green-200 rounded-full border border-green-500/20">
+                  আপ্নে তো চ্যালচ্যালায়া ইঞ্জিনিয়ার হয়া যাবেন 😎
+                </span>
+              )}
+              {result.Status === 'Failed' && (
+                <span className="ml-3 px-2 text-3xl py-0.5 text-xs bg-red-500/10 text-red-200 rounded-full border border-red-500/20">
+                  পেরা নাই চিল আসছে বছর অবার হবে 🥸
+                </span>
+              )}
+              {result.Status === 'Drop' && (
+                <span className="ml-3 px-2 text-3xl py-0.5 text-xs bg-yellow-500/10 text-yellow-200 rounded-full border border-yellow-500/20">
+                  বিয়ে শাদি করে সংসর করো 🙃
+                </span>
+              )}
+            </div>
           </div>
-          <span className={`px-4 py-1.5 rounded-full text-sm font-medium shadow-lg ${
-            result.Status === 'Passed' 
-              ? 'bg-green-900/50 text-green-300 border border-green-800/50' :
-            result.Status === 'Failed' 
-              ? 'bg-red-900/50 text-red-300 border border-red-800/50' :
-              'bg-yellow-900/50 text-yellow-300 border border-yellow-800/50'
-          }`}>
-            {result.Status}
-          </span>
         </div>
       </div>
 
@@ -199,14 +234,17 @@ const renderResult = () => {
 
   return (
     <>
-<NavBar />
-    <div className="min-h-screen bg-gray-950 text-white p-4 md:p-8">
+    <div className=" text-white p-4 md:p-8">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold text-emerald-400 mb-2 text-center">
           Check Your Result
         </h1>
         <p className="text-gray-400 text-center mb-8">
-          Enter your roll number to view your result
+          Enter your roll number to view your result <br />
+         <span className="text-rose-200">
+          *Only For Rajshahi Polytechnic Institute Students
+          </span>
+
         </p>
 
         <form onSubmit={searchResult} className="bg-gray-900/50 p-6 rounded-xl border border-gray-800">
@@ -257,7 +295,6 @@ const renderResult = () => {
         {renderResult()}
       </div>
     </div>
-    <Footer />
     </>
   );
 };

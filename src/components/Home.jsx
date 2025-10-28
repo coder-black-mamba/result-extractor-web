@@ -18,16 +18,7 @@ const Home = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-950">
-      {/* Navigation */}
-      <div
-        className={`fixed w-full z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-black/90 backdrop-blur-sm shadow-lg border-b border-rose-900/30"
-            : "bg-transparent"
-        }`}
-      >
-        <NavBar />
-      </div>
+ 
 
       {/* Main Content */}
       <main className="flex-grow pt-20">
@@ -61,8 +52,6 @@ const Home = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <Footer />
     </div>
   );
 };

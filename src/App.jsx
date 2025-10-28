@@ -1,21 +1,21 @@
-import { useState, useEffect } from 'react';
-import ExtractorMain from './components/extractor/ExtractorMain';
-import NavBar from './components/layouts/NavBar';
-import Footer from './components/layouts/Footer';
-import { BrowserRouter as Router, Routes, Route } from "react-router"
-import Home from './components/Home';
-import CheckResult from './components/result_/CheckResult';
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router";
+import Home from "./pages/Home";
+import CheckResult from "./components/result_/CheckResult";
+import BaseLayout from "./layouts/BaseLayout";
+import ResultExtractor from "./pages/ResultExtractor";
 
 function App() {
-
-
   return (
-   <Router>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/result" element={<CheckResult />} />
-    </Routes>
-   </Router>
+    <Router>
+      <Routes>
+        <Route path="/" element={<BaseLayout />}>
+          <Route index element={<Home />} />
+          <Route path="result" element={<CheckResult />} />
+          <Route path="extract" element={<ResultExtractor />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
