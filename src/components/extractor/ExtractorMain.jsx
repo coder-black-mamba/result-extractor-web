@@ -10,155 +10,109 @@ export default function GPAResultParser() {
   const [showHelp, setShowHelp] = useState(false);
 
   const studentRegex = /\d{6}\s*(\(([\s\S]*?)\)|\{([\s\S]*?)\})/gm;
-
-  // const handleProcess = () => {
-  //   const matches = [...input.matchAll(studentRegex)];
-  //   const results = matches.map((m) => {
-  //     const roll = m[0].match(/^\d{6}/)[0];
-  //     const content = m[2] || m[3];
-
-  //     // Case: Drop — content does NOT contain GPA
-  //     if (!/gpa/i.test(content)) {
-  //       const failedSubs = content
-  //         .split(",")
-  //         .map((s) => s.trim())
-  //         .filter(Boolean);
-
-  //       return {
-  //         Roll: roll,
-  //         GPA1: "-",
-  //         GPA2: "-",
-  //         GPA3: "-",
-  //         GPA4: "-",
-  //         GPA5: "-",
-  //         GPA6: "-",
-  //         GPA7: "-",
-  //         GPA8: "-",
-  //         Status: "Drop",
-  //         "Failed Subs": failedSubs.join(", "),
-  //       };
-  //     }
-
-  //     // Case: Failed or Passed — content contains GPA
-  //     const gpaPattern = /gpa(\d+):\s*([\d.]+|ref)/gi;
-  //     const gpas = {};
-  //     const failedGPA = [];
-
-  //     for (const g of content.matchAll(gpaPattern)) {
-  //       const num = g[1];
-  //       const val = g[2];
-  //       gpas[`GPA${num}`] = val;
-  //       if (val.toLowerCase() === "ref") failedGPA.push(`GPA${num}`);
-  //     }
-
-  //     // Fill missing GPA fields up to GPA8
-  //     for (let i = 1; i <= 8; i++) {
-  //       if (!gpas[`GPA${i}`]) gpas[`GPA${i}`] = "-";
-  //     }
-
-  //     // Extract failed subjects if any
-  //     const refMatch = content.match(/ref_sub:\s*([^}]*)/i);
-  //     const failedSubs = refMatch
-  //       ? refMatch[1].trim().replace(/\s+/g, " ")
-  //       : failedGPA.length > 0
-  //       ? failedGPA.join(", ")
-  //       : "-";
-
-  //     // Determine status
-  //     const status =
-  //       failedSubs.split(",").length >= 4 ? "Drop" : failedGPA.length > 0 ? "Failed" : "Passed";
-
-  //     return {
-  //       Roll: roll,
-  //       ...gpas,
-  //       Status: status,
-  //       "Failed Subs": failedSubs,
-  //     };
-  //   });
-
-  //   setData(results);
-  // };
-
-  const handleProcess = async () => {
+ 
+const handleProcess = async () => {
   if (!input.trim()) return;
-  
+
+  // Set processing state and allow React to render spinner
   setIsProcessing(true);
-  
-  // Simulate processing time for better UX
-  await new Promise(resolve => setTimeout(resolve, 300));
-  
+  await new Promise(r => setTimeout(r, 0)); // ✅ gives React time to re-render
+
   try {
     const matches = [...input.matchAll(studentRegex)];
     const results = matches.map((m) => {
-    const roll = m[0].match(/^\d{6}/)[0];
-    const content = m[2] || m[3];
+      const roll = m[0].match(/^\d{6}/)[0];
+      const content = m[2] || m[3];
 
-    const hasGPA = /gpa/i.test(content); // check if GPA exists
+      // 🧩 Case 1: Drop — curly brackets {} and no GPA
+      if (!/gpa/i.test(content) && m[3]) {
+        const failedSubsList = content
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean);
 
-    // Case: Drop — no GPA
-    if (!hasGPA) {
-      const failedSubsList = content
-        .split(",")
-        .map((s) => s.trim())
-        .filter(Boolean);
+        return {
+          Roll: roll,
+          GPA1: "-",
+          GPA2: "-",
+          GPA3: "-",
+          GPA4: "-",
+          GPA5: "-",
+          GPA6: "-",
+          GPA7: "-",
+          GPA8: "-",
+          Status: "Drop",
+          "Failed Subs": failedSubsList.join(", "),
+        };
+      }
+
+      // 🧩 Case 2: First-sem / simple — parentheses () with single GPA value
+      if (!/gpa/i.test(content) && m[2]) {
+        const gpaValue = content.match(/[\d.]+/)?.[0] || "-";
+        return {
+          Roll: roll,
+          GPA1: gpaValue,
+          GPA2: "-",
+          GPA3: "-",
+          GPA4: "-",
+          GPA5: "-",
+          GPA6: "-",
+          GPA7: "-",
+          GPA8: "-",
+          Status: "Passed",
+          "Failed Subs": "-",
+        };
+      }
+
+      // 🧩 Case 3: Full GPA object — has gpa1, gpa2, etc.
+      const gpaPattern = /gpa(\d+):\s*([\d.]+|ref)/gi;
+      const gpas = {};
+      const failedGPA = [];
+
+      for (const g of content.matchAll(gpaPattern)) {
+        const num = g[1];
+        const val = g[2];
+        gpas[`GPA${num}`] = val;
+        if (val.toLowerCase() === "ref") failedGPA.push(`GPA${num}`);
+      }
+
+      // Fill missing GPA fields up to GPA8
+      for (let i = 1; i <= 8; i++) {
+        if (!gpas[`GPA${i}`]) gpas[`GPA${i}`] = "-";
+      }
+
+      // Extract failed subjects
+      const refMatch = content.match(/ref_sub:\s*([^}]*)/i);
+      const failedSubs = refMatch
+        ? refMatch[1].trim().replace(/\s+/g, " ")
+        : failedGPA.length > 0
+        ? failedGPA.join(", ")
+        : "-";
+
+      // Determine status
+      const status = failedSubs.includes("(")
+        ? "Failed"
+        : failedGPA.length > 0
+        ? "Failed"
+        : "Passed";
+
       return {
         Roll: roll,
-        GPA1: "-",
-        GPA2: "-",
-        GPA3: "-",
-        GPA4: "-",
-        GPA5: "-",
-        GPA6: "-",
-        GPA7: "-",
-        GPA8: "-",
-        Status: "Drop",
-        "Failed Subs": failedSubsList.join(", "),
+        ...gpas,
+        Status: status,
+        "Failed Subs": failedSubs,
       };
-    }
-
-    // Case: Failed or Passed — GPA exists
-    const gpaPattern = /gpa(\d+):\s*([\d.]+|ref)/gi;
-    const gpas = {};
-    const failedGPA = [];
-
-    for (const g of content.matchAll(gpaPattern)) {
-      const num = g[1];
-      const val = g[2];
-      gpas[`GPA${num}`] = val;
-      if (val.toLowerCase() === "ref") failedGPA.push(`GPA${num}`);
-    }
-
-    // Fill missing GPA fields up to GPA8
-    for (let i = 1; i <= 8; i++) {
-      if (!gpas[`GPA${i}`]) gpas[`GPA${i}`] = "-";
-    }
-
-    // Extract failed subjects if any
-    const refMatch = content.match(/ref_sub:\s*([^}]*)/i);
-    const failedSubs = refMatch
-      ? refMatch[1].trim().replace(/\s+/g, " ")
-      : failedGPA.length > 0
-      ? failedGPA.join(", ")
-      : "-";
-
-    const status = failedGPA.length > 0 ? "Failed" : "Passed";
-
-    return {
-      Roll: roll,
-      ...gpas,
-      Status: status,
-      "Failed Subs": failedSubs,
-    };
     });
 
     setData(results);
   } catch (error) {
     console.error("Error processing data:", error);
-    alert("An error occurred while processing the data. Please check your input format.");
+    alert("⚠️ An error occurred while processing the data. Please check your input format.");
   } finally {
     setIsProcessing(false);
   }
 };
+
 
   const handleExportExcel = () => {
     if (data.length === 0) return;
@@ -264,7 +218,7 @@ export default function GPAResultParser() {
             </div>
 
             <div className="flex flex-wrap gap-3 mt-4">
-              <button
+             <button
                 onClick={handleProcess}
                 disabled={!input.trim() || isProcessing}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
@@ -284,8 +238,10 @@ export default function GPAResultParser() {
                     Process Data
                   </>
                   
-                )}
+                )} 
               </button>
+              
+              
                 <button
                     onClick={handleExportJson}
                     disabled={!data.length || isProcessing}
