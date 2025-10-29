@@ -121,7 +121,7 @@ const CheckResult = () => {
         text: "text-yellow-300",
         border: "border-yellow-500/20",
         emoji: "⏳",
-        message: "Take your time, you got this!",
+        message: "বিয়ে করে সংসার করেন ",
       },
     }[result.Status] || {
       bg: "bg-gray-500/10",
@@ -190,7 +190,7 @@ const CheckResult = () => {
                 href="https://absyd.xyz"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-emerald-300 hover:text-emerald-200 transition-colors"
+                className="text-blue-300 underline hover:text-emerald-200 transition-colors"
               >
                 Abu Sayed
               </a>{" "}

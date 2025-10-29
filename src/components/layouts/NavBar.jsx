@@ -41,7 +41,7 @@ const NavBar = () => {
                 />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent group-hover:opacity-90 transition-opacity">
-                RPICC
+                RPICCxABSYD
               </span>
             </Link>
           </div>

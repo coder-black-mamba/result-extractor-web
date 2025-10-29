@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import { FiDownload, FiBarChart2, FiSearch, FiCheckCircle, FiUsers, FiInfo, FiCode } from 'react-icons/fi';
 import CheckResult from '../components/result_/CheckResult';
+import CreditBig from '../components/CreditBig';
 
 const Home = () => {
   return (
@@ -106,8 +107,10 @@ const Home = () => {
           </div>
         </div>
 
+        <CreditBig />
+
         {/* About Section */}
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center my-6">
           <h2 className="text-2xl font-bold text-white mb-6 flex items-center justify-center gap-2">
             <FiUsers className="text-blue-400" />
             Built with ❤️ by <a href="https://absyd.xyz" className='text-blue-400 hover:underline'>Abu Sayed</a> And <a href="https://beta-rpicc.vercel.app" className='text-blue-400 hover:underline'>RPICC</a>
@@ -129,10 +132,7 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Footer */}
-        <footer className="mt-16 text-center text-gray-400 text-sm pb-8">
-          <p>© {new Date().getFullYear()} RPI Result Portal. All rights reserved.</p>
-        </footer>
+ 
       </div>
     </div>
   );
