@@ -176,7 +176,7 @@ const CheckResult = () => {
   };
 
   return (
-    <div className="min-h-screen text-white p-4 md:p-8">
+    <div className=" text-white p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <header className="text-center mb-12">
