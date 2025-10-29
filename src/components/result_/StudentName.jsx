@@ -28,7 +28,7 @@ const StudentName = ({ roll }) => {
         }
         
         const data = await response.json();
-        setName(data.name || 'vaya name nai');
+        setName(data.name || 'Name Not Avilable');
       } catch (err) {
         setError(err.message);
         console.error('Error fetching student name:', err);
@@ -45,10 +45,10 @@ const StudentName = ({ roll }) => {
   }
 
   if (error) {
-    return <div className="text-red-500">Error: {"somossa ache tor vai"}</div>;
+    return <div className="text-red-100">Name Not Avilable</div>;
   }
 
-  return <div className="font-medium">{name || 'vaya name nai'} vai , shonen</div>;
+  return <div className="font-medium">{name || 'Name Not Avilable'} </div>;
 };
 
 export default StudentName;
