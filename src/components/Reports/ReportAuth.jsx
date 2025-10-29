@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState  } from 'react';
 import { useNavigate } from 'react-router';
 
 const ReportAuth = ({ data, setData, setIsAuthenticated }) => {
@@ -54,7 +54,7 @@ const ReportAuth = ({ data, setData, setIsAuthenticated }) => {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center p-4">
+        <div className="min-h-screen   flex items-center justify-center p-4">
             <div className="w-full max-w-md">
                 <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 shadow-2xl">
                     <div className="text-center mb-8">
