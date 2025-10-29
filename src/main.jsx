@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import ReactGA from "react-ga4";
 import { BrowserRouter as Router } from "react-router";
+import "./index.css";
+
+
 ReactGA.initialize("G-3FD14SKH74");  
 // ReactGA.pageview(window.location.pathname + window.location.search);
 
