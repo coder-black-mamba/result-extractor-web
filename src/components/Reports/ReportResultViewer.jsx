@@ -93,7 +93,7 @@ const ReportResultViewer = ({ data: studentData }) => {
     const fetchData = async () => {
       try {
         dispatch({ type: "SET_LOADING", payload: true });
-        const response = await fetch("/results/5th-rpi-26-10-25.json");
+        const response = await fetch("/results/26-10-25-all.json");
         const data = await response.json();
         dispatch({ type: "SET_RESULT_DATA", payload: data });
 

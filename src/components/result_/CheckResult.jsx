@@ -19,7 +19,7 @@ const CheckResult = () => {
     setError(null);
     
     try {
-      const response = await fetch('/results/5th-rpi-26-10-25.json');
+      const response = await fetch('/results/26-10-25-all.json');
       if (!response.ok) {
         throw new Error('Failed to fetch results');
       }
