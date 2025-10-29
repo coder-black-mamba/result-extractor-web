@@ -1,8 +1,11 @@
 import React from 'react'
+import ReportMain from '../components/Reports/ReportMain'
 
 const Reports = () => {
   return (
-    <div>Reports</div>
+    <div className='min-h-screen bg-gray-900 text-white container mx-auto'>
+        <ReportMain />
+    </div>
   )
 }
 
