@@ -2,6 +2,7 @@ import React from 'react'
 import NavBar from '../components/layouts/NavBar'
 import Footer from '../components/layouts/Footer'
 import { Outlet } from 'react-router'
+import { Analytics } from '@vercel/analytics/next';
 
 const BaseLayout = () => {
   return (
@@ -9,6 +10,7 @@ const BaseLayout = () => {
         <NavBar />
         <Outlet className='py-5'/>
         <Footer />
+        <Analytics />
     </div>
   )
 }
