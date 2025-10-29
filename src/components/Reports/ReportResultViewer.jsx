@@ -52,7 +52,7 @@ const reducer = (state, action) => {
 const ROWS_PER_PAGE = 10;
 
 const ReportResultViewer = ({ data: studentData }) => {
-    const [isAnalytics, setIsAnalytics] = useState()
+    const [isShowingAnalytics, setIsShowingAnalytics] = useState(true)
   const [state, dispatch] = useReducer(reducer, initialState);
   const { resultData, dataWithResult, loading, error, filters, searchTerm, page } = state;
 
@@ -177,6 +177,7 @@ const ReportResultViewer = ({ data: studentData }) => {
 
   return (
     <div className=" rounded-lg shadow overflow-hidden">
+
       {/* Search and Filters */}
       <div className="p-6 border-b border-gray-200">
         <SearchAndFilters
@@ -190,7 +191,11 @@ const ReportResultViewer = ({ data: studentData }) => {
           filteredData={filteredData}
         />
       </div>
-
+        {/* analytics */}
+        <div className="my-5">
+        <button onClick={()=>setIsShowingAnalytics(!isShowingAnalytics)} className="pointer px-4 py-2 flex items-center gap-2 bg-green-400 text-gray-600 rounded">{isShowingAnalytics ? "Hide Analytics" : "Show Analytics"}</button>
+        {isShowingAnalytics && <ResultAnalytics data={filteredData} />}
+        </div>
       {/* Results Table */}
       <div className="overflow-x-auto">
         <StudentResultTable 

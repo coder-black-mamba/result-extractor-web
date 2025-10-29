@@ -50,6 +50,7 @@ const ResultAnalytics = ({ data }) => {
     }, [data]);
 
     if (!stats) return null;
+    console.log(data);
 
     return (
         <div className="bg-gray-900 text-gray-100 p-6 rounded-lg shadow-lg mb-6 border border-gray-800">
