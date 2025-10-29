@@ -8,7 +8,7 @@ const NavBar = () => {
 
   const navLinks = [
     { name: 'Extractor', to: '/extract' },
-    { name: 'Report', to: '/report' },
+    { name: 'Report', to: '/reports' },
     { 
       name: 'Abu Sayed', 
       href: 'https://absyd.xyz/',

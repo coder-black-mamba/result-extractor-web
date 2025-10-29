@@ -38,7 +38,7 @@ const Home = () => {
             </Link>
             
             <Link 
-              to="/report" 
+              to="/reports" 
               className="group bg-gray-800/60 hover:bg-gray-700/80 transition-all duration-300 rounded-2xl p-6 border border-gray-700/50 hover:border-emerald-500/30 hover:shadow-lg hover:shadow-emerald-500/10 flex flex-col items-center text-center"
             >
               <div className="p-4 rounded-2xl bg-emerald-500/10 group-hover:bg-emerald-500/20 transition-colors mb-4">

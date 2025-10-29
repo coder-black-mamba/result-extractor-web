@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import CheckResult from "./components/result_/CheckResult";
 import BaseLayout from "./layouts/BaseLayout";
 import ResultExtractor from "./pages/ResultExtractor";
+import Reports from "./pages/Reports";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="result" element={<CheckResult />} />
           <Route path="extract" element={<ResultExtractor />} />
+          <Route path="reports" element={<Reports />} />
         </Route>
       </Routes>
     </Router>
