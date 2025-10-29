@@ -3,7 +3,7 @@ import NavBar from '../components/layouts/NavBar'
 import Footer from '../components/layouts/Footer'
 import { Outlet } from 'react-router'
 import { Analytics } from '@vercel/analytics/next';
-
+import { SpeedInsights } from "@vercel/speed-insights/react"
 const BaseLayout = () => {
   return (
     <div className='bg-gray-900'>
@@ -11,6 +11,7 @@ const BaseLayout = () => {
         <Outlet className='py-5'/>
         <Footer />
         <Analytics />
+        <SpeedInsights />
     </div>
   )
 }
