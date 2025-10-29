@@ -187,6 +187,7 @@ const ReportResultViewer = ({ data: studentData }) => {
           departments={departments}
           semesters={semesters}
           shifts={shifts}
+          filteredData={filteredData}
         />
       </div>
 

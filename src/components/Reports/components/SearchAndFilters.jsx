@@ -1,5 +1,7 @@
 // src/components/Reports/components/SearchAndFilters.jsx
 import React from 'react';
+import * as XLSX from 'xlsx';
+import { FaFileExcel } from 'react-icons/fa';
 
 const SearchAndFilters = ({
   searchTerm,
@@ -8,8 +10,36 @@ const SearchAndFilters = ({
   onFilterChange,
   departments = [],
   semesters = [],
-  shifts = []
+  shifts = [],
+  filteredData
 }) => {
+
+const exportToExcel = (data) => {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(
+      data.map(student => ({
+        Roll: student.roll,
+        Name: student.name || 'N/A',
+        'Department/Semester/Shift': student['dept/sem/shift'] || 'N/A',
+        Status: student.result?.Status || 'N/A',
+        'CGPA 1st': student.result?.GPA1 || '-',
+        'CGPA 2nd': student.result?.GPA2 || '-',
+        'CGPA 3rd': student.result?.GPA3 || '-',
+        'CGPA 4th': student.result?.GPA4 || '-',
+        'CGPA 5th': student.result?.GPA5 || '-',
+        'CGPA 6th': student.result?.GPA6 || '-',
+        'CGPA 7th': student.result?.GPA7 || '-',
+        'CGPA 8th': student.result?.GPA8 || '-',
+        'Failed Subjects': student.result?.["Failed Subs"] || '-'
+      }))
+    );
+    
+    XLSX.utils.book_append_sheet(wb, ws, "Student Results");
+    XLSX.writeFile(wb, "student_results.xlsx");
+  };
+
+
+
   return (
     <div className="space-y-4">
       {/* Search Input */}
@@ -105,6 +135,9 @@ const SearchAndFilters = ({
           </select>
         </div>
       </div>
+      <div className="my-5">
+            <button onClick={()=>exportToExcel(filteredData)} className="cursor-pointer px-4 py-2 flex items-center gap-2 bg-green-400 text-gray-600 rounded"> <FaFileExcel /> Export To Excel</button>
+        </div>
     </div>
   );
 };
